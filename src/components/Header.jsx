@@ -6,6 +6,32 @@ const stats = [
 ]
 
 export default function Header() {
+    const PSI_API_KEY = import.meta.env.VITE_PSI;
+    const PSI_API_URL = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
+
+    const handelSubmit = async (event)=> {
+        event.preventDefault();
+        const targetURL = 'https://www.agrofy.com.ar'        
+        try {
+            const response = await fetch(`${PSI_API_URL}?url=${targetURL}/&key=${PSI_API_KEY}&strategy=mobile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                console.log('error')
+                throw new Error('Network response was not ok');
+            }
+            console.log(response)
+        } catch (error) {
+            console.error('Error fetching user reports:', error);
+        } finally {
+            //
+        }
+    }
+
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32">
       <div
@@ -47,7 +73,7 @@ export default function Header() {
           </div>
 
           <div className="mt-8 lg:mt-0 flex-none lg:w-3/6 sm:px-16">
-            <form className="bg-white/20 p-6 pt-4 rounded-lg text-white">
+            <form className="bg-white/20 p-6 pt-4 rounded-lg text-white" onSubmit={handelSubmit}>
             <label htmlFor="price" className="block text-base sm:text-xl font-medium leading-6 text-white">
                 Qué tan rápido es tu sitio?
             </label>

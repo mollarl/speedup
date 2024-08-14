@@ -22,7 +22,7 @@ export default function Nosotros() {
             <p className="mt-2 text-sm text-gray-600">Luciano Mollar</p>
             <div className="flex justify-start mt-2">
               <a className='mr-1 __smallIconModifier opacity-50 hover:opacity-100' href='https://www.linkedin.com/in/luciano-mollar/' target="_blank"><IconLinkedIn/></a>
-              <a className='mr-1 __smallIconModifier opacity-50 hover:opacity-100' href='mailto:'><IconMail/></a>
+              <span className='mr-1 __smallIconModifier opacity-50 hover:opacity-100 cursor-pointer' onClick={() => window.location.href = `mailto:mollar.luciano@gmail.com`}><IconMail/></span>
             </div>
           </div>
           <ul className='sm:grid sm:grid-cols-3 sm:gap-4 items-center'>
