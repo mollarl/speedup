@@ -25,3 +25,9 @@ dist-ssr
 
 # Variables de entorno
 .env
+
+# lock
+package-lock.json
+
+#MOKS
+src/MOKS/*
