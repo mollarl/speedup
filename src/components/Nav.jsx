@@ -8,7 +8,7 @@ const initialNavigation = [
   { name: 'Otras soluciones', href: '/#soluciones', current: false, important:false },
   { name: 'Nosotros', href: '/#nosotros', current: false, important:false },
   //{ name: 'Proyectos', href: '#', current: false, important:false },
-  { name: 'Contactanos', href: '#', current: false, important:true },
+  { name: 'Contactanos', href: '/#contact', current: false, important:true },
 ];
 
 function classNames(...classes) {

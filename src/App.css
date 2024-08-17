@@ -1,8 +1,125 @@
-.__bigIconModifier svg{
+.__bigIconModifier svg {
   width: 80px;
   height: 80px;
 }
-.__smallIconModifier svg{
+.__smallIconModifier svg {
   width: 18px;
   height: 18px;
+}
+.__Modal {
+  display: flex;
+  cursor: pointer;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 99999;
+  background-color: rgb(0 0 0 / 25%);
+  top: 0;
+  left: 0;
+  --tw-backdrop-blur: blur(12px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.__ModalContent {
+  display: block;
+  cursor: default;
+  width: 80vw;
+  padding: 1.5rem;
+  margin: auto;
+  min-height: 30vh;
+  max-height: 80vh;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 15px black;
+  overflow: auto;
+  position: relative;
+}
+
+.img-container {
+  max-height: 480px;
+  width: 300px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.__Loader {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: gray;
+    top: 10vh;
+    line-height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+  .__Loader .__LoaderTexts {
+    display: flex;
+    text-align: center;
+    font-size: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+
+.__LoaderProgress {
+   width: 60%;
+   height: 24.6px;
+   border-radius: 22.4px;
+   color: #fbbf24;
+   border: 2.2px solid;
+   position: relative;
+}
+
+.__LoaderProgress::before {
+   content: "";
+   position: absolute;
+   margin: 2.2px;
+   inset: 0;
+   border-radius: inherit;
+   background: currentColor;
+   animation: progress-pf82op 30s 1;
+}
+
+@keyframes progress-pf82op {
+  0.1%{
+    inset: 0 100% 0 0;
+  }
+  20%{
+    inset: 0 70% 0 0;
+  }
+  40%{
+    inset: 0 30% 0 0;
+  }
+  60%{
+    inset: 0 25% 0 0;
+  }
+  80%{
+    inset: 0 5% 0 0;
+  }
+  100% {
+    inset: 0;
+  }
+}
+
+.color-slow,
+.return-text-error{
+  color: rgb(220 38 38);
+}
+.color-avg,
+.return-text-warning{
+  color: rgb(251 146 60);
+}
+.color-fast,
+.color-superfast,
+.return-text-success
+{
+  color: rgb(101 163 13);
 }

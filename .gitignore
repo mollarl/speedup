@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variables de entorno
+.env
+
+# lock
+package-lock.json
+
+#MOKS
+src/MOKS/*
