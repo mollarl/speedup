@@ -33,7 +33,8 @@ export default function Header() {
     const [loaderText, setLoaderText] = useState();
     const { 
     modal, setModal,
-    loading, setLoading
+    loading, setLoading,
+    setDefaultMessage
      } = useContext(LayoutContext);
 
     const handelSubmit = (event) => {
@@ -43,11 +44,30 @@ export default function Header() {
         if (!url) return;
         fetchData(url);
     };
+
     const handleReCalc = (event) => {
         event.preventDefault()
         setMetrics(null);
         setLighthouseResult(null);
     };
+
+    const handleOptim = () => {
+
+    const message = (`Hola, realicé una prueba de rendimiento sobre ${metrics.finalUrl} con estos resultados:
+        Score: ${metrics.score}
+        LCP: ${metrics.lcpDisplay}
+        CLS: ${metrics.clsDisplay}
+        TBT: ${metrics.tbtDisplay}
+        FCP: ${metrics.fcpDisplay}
+
+        Quisiera que me contacten para revisar las oportunidades de optimización.
+    `)
+
+        setDefaultMessage(message);
+        setModal(false);
+        history.replaceState(null, null, '/#contact');
+        document.getElementById('contact')?.scrollIntoView()
+    }
 
     const fetchData = async (url) => {
       setModal(true);
@@ -76,14 +96,6 @@ export default function Header() {
         if(!modal){
             setModal(true);
         }
-         /*
-        setTimeout(function(){
-            const { id, loadingExperience, lighthouseResult } = audit;
-            setLighthouseResult(lighthouseResult);
-            if(!modal){
-                setModal(true);
-            }
-        }, 1000);*/
       } catch (error) {
         setError(error);
       } finally {
@@ -95,7 +107,6 @@ export default function Header() {
     useEffect( () => {
 
         if(!lighthouseResult) return;
-//console.log (lighthouseResult)
         
         let diag = [];
         const findItems = (obj) => {
@@ -114,9 +125,13 @@ export default function Header() {
             
         const lighthouseMetrics = {
             'fcp': parseFloat(lighthouseResult.audits['first-contentful-paint'].numericValue / 1000).toFixed(2),
-            'cls': lighthouseResult.audits['cumulative-layout-shift'].displayValue,
+            'fcpDisplay': lighthouseResult.audits['first-contentful-paint'].displayValue,
+            'cls': lighthouseResult.audits['cumulative-layout-shift'].numericValue,
+            'clsDisplay': lighthouseResult.audits['cumulative-layout-shift'].displayValue,
             'tbt': parseFloat(lighthouseResult.audits['total-blocking-time'].numericValue / 1000).toFixed(2),
+            'tbtDisplay': lighthouseResult.audits['total-blocking-time'].displayValue,
             'lcp': parseFloat(lighthouseResult.audits['largest-contentful-paint'].numericValue / 1000).toFixed(2),
+            'lcpDisplay': lighthouseResult.audits['largest-contentful-paint'].displayValue,
             'score': parseInt(lighthouseResult.categories.performance.score * 100),
             'screen': lighthouseResult.audits['final-screenshot'].details.data,
             'screenTns': lighthouseResult.audits['screenshot-thumbnails'].details.items,
@@ -240,10 +255,10 @@ export default function Header() {
                     {statusLCP(metrics.lcp) === 'fast' && (statusSCORE(metrics.score) === 'superfast' ? ' vuela!' : 'es una buena velocidad de carga. Podemos enfocarnos en las otras métricas y recomendaciones.')}  
                 </p>
 
-                <button className='text-sm uppercase rounded-md py-2 mt-4 border-0 bg-amber-400 px-4 text-gray-800 mr-4' onClick={(e) => {
+                <button className='text-sm uppercase rounded-md py-2 mt-4 border-0 bg-amber-400 hover:bg-amber-400/80 px-4 text-gray-800 mr-4' onClick={(e) => {
                     setModal(true);
                 }}>Mostrar detalles</button>
-                <button className='text-sm uppercase rounded-md py-2 mt-4 border-0 px-4 text-amber-400' onClick={handleReCalc}>Volver a calcular</button>
+                <button className='text-sm uppercase rounded-md py-2 mt-4 border-0 px-4 text-amber-400 hover:text-black hover:bg-amber-400/80' onClick={handleReCalc}>Volver a calcular</button>
             </>
             ) : (
                 <div className={`relative mt-2 rounded-md shadow-sm ${loading && 'opacity-50'}`}>
@@ -256,7 +271,7 @@ export default function Header() {
                     disabled={loading ? 'disabled' : false}
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
-                        <button className="h-full text-xs sm:text-sm rounded-r-md border-0 bg-amber-400 px-4 text-gray-800" disabled={loading ? 'disabled' : false}>ANALIZAR</button>
+                        <button className="h-full text-xs sm:text-sm rounded-r-md border-0 bg-amber-400 hover:bg-amber-400/80 px-4 text-gray-800" disabled={loading ? 'disabled' : false}>ANALIZAR</button>
                     </div>
                 </div>
             )}
@@ -286,8 +301,8 @@ export default function Header() {
                 <span className='text-2xl sm:text-3xl absolute top-2 right-4 cursor-pointer' onClick={() => {setModal(false);}}>&times;</span>
                 {metrics ? (
                 <>
-                <button className='hidden sm:block text-lg font-semibold uppercase rounded-md py-2 mt-4 border-0 bg-amber-400 px-4 text-gray-800 z-10 shadow-lg absolute bottom-8 right-8'
-                onClick={() => window.location.href = `mailto:mollar.luciano@gmail.com`}
+                <button className='hidden sm:block text-lg font-semibold uppercase rounded-md py-2 mt-4 border-0 bg-amber-400 hover:bg-amber-300 px-4 text-gray-800 z-10 shadow-lg absolute bottom-8 right-8'
+                onClick={handleOptim}
                 >Optimizar esta web</button>
                 <div className='overflow-auto h-full'>
                     <p className='text-sm sm:text-lg text-gray-400'>Prueba realizada sobre el sitio: <span className='text-amber-400'>{metrics.finalUrl}</span></p>
@@ -308,19 +323,19 @@ export default function Header() {
                                 <div className="mx-auto basis-1/4 border-b sm:border-b-0 sm:border-r">
                                     <dt className="text-base leading-7 text-gray-600">Largest Contentful Paint</dt>
                                     <dd className={`text-2xl font-semibold tracking-tight sm:text-4xl color-${statusLCP(metrics.lcp)}`}>
-                                        {metrics.lcp}s
+                                        {metrics.lcpDisplay}
                                     </dd>
                                 </div>
                                 <div className="mx-auto basis-1/4 border-b sm:border-b-0 sm:border-r">
                                     <dt className="text-base leading-7 text-gray-600">Cumulative Layout Shift</dt>
                                     <dd className={`text-2xl font-semibold tracking-tight sm:text-4xl color-${statusCLS(metrics.cls)}`}>
-                                        {metrics.cls}
+                                        {metrics.clsDisplay}
                                     </dd>
                                 </div>
                                 <div className="mx-auto basis-1/4">
                                     <dt className="text-base leading-7 text-gray-600">Total Bloking Time    </dt>
                                     <dd className={`text-2xl font-semibold tracking-tight sm:text-4xl color-${statusTBT(metrics.tbt)}`}>
-                                        {metrics.tbt}s
+                                        {metrics.tbtDisplay}
                                     </dd>
                                 </div>
                             </dl>

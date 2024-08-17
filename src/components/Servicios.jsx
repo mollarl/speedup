@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import { IconShield, IconMeasure, IconResearch, IconDevelop, IconBugThin, IconUxThin, IconDevThin } from './Icons';
-
+import { LayoutContext } from '../contexts/layout';
 const steps = [
   {
     name: 'Medición',
@@ -33,22 +34,35 @@ const solutions = [
     description:
       'Implementamos mapas de calor, grabaciones de sesiones de usuario, A/B testings y encuestas para identificar oportunidades de mejora.',
     icon: IconUxThin,
+    msj: 'Hola, quisiera consultar sobre el servicio de UX research.',
   },
   {
     name: 'Desarrollo Web',
     description:
       'Podemos ayudarte a mejorar su sitio, a desarrollar uno nuevo o crear nuevos componentes para mejorar tu servicio.',
     icon: IconDevThin,
+    msj: 'Hola, quisiera consultar sobre el servicio de desarrollo web.',
   },
   {
     name: 'Quality Assurance',
     description:
       'Te ayudamos a identificar fallas en tu sitio que pueden estar afectando al tráfico, a la experiencia o incluso a las conversiones.',
     icon: IconBugThin,
+    msj: 'Hola, quisiera consultar sobre el servicio de quality assurance.',
   },
 ]
 
 export default function Servicios() {
+
+  const { setDefaultMessage, modal, setModal } = useContext(LayoutContext);  
+
+  const handleContact = (service)=> {
+    setDefaultMessage(service);
+    if(modal) setModal(false);
+    history.replaceState(null, null, '/#contact');
+    document.getElementById('contact')?.scrollIntoView()
+  }
+
   return (
   <>
     <a id="servicios"></a>
@@ -78,7 +92,7 @@ export default function Servicios() {
             ))}
           </dl>
           <div className='mt-6 flex justify-center'>
-            <button className='text-sm uppercase rounded-md py-3 w-2/4 border-0 bg-amber-400 px-4 text-gray-800'>Contratar servicio</button>
+            <button className='text-sm uppercase rounded-md py-3 w-2/4 border-0 bg-amber-400 hover:bg-amber-400/80 px-4 text-gray-800'  onClick={() => handleContact('Hola, quisiera consultar sobre los servicios de optimización de performance.')}>Consultar por este servicio</button>
           </div>
         </div>
       </div>
@@ -109,7 +123,7 @@ export default function Servicios() {
                 <p className="my-6 text-base font-normal leading-7 text-gray-600">
                   {solution.description}
                 </p>
-                <button className='text-sm uppercase rounded-md py-3 border-0 bg-amber-400 px-4 text-gray-800'>Contratar servicio</button>
+                <button className='text-sm uppercase rounded-md py-3 border-0 bg-amber-400 hover:bg-amber-400/80 px-4 text-gray-800' onClick={() => handleContact(solution.msj)}>Consultar por este servicio</button>
               </li>
             ))}
             </ul>
