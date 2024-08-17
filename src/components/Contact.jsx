@@ -1,47 +1,57 @@
-import { useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { LayoutContext } from '../contexts/layout'
 
 export default function Contact() {
 
-    const { defaultMessage } = useContext(LayoutContext);  
+    const { defaultMessage, loading, setLoading } = useContext(LayoutContext);  
+    const [emailReturn, setEmailReturn] = useState({text:null, status:null});
 
     const handleSubmit = async (event) => {
-  event.preventDefault();
+        event.preventDefault();
 
-  const formData = {
-    firstName: event.target['first-name'].value,
-    lastName: event.target['last-name'].value,
-    company: event.target.company.value,
-    email: event.target.email.value,
-    message: event.target.message.value,
-  };
+        setLoading(true);
+        const formData = {
+            firstName: event.target['first-name'].value,
+            lastName: event.target['last-name'].value,
+            company: event.target.company.value,
+            email: event.target.email.value,
+            message: event.target.message.value,
+        };
 
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            
-            'api-key':  import.meta.env.VITE_BREVO_API,
-        },
-        body: JSON.stringify({
-        sender: { name: formData.firstName, email: formData.email },
-        to: [{ email: 'mollar.luciano@gmail.com', name: 'Luciano Mollar' }],
-        subject: `Mensaje de ${formData.firstName} ${formData.lastName}`,
-        textContent: `
-            Nombre: ${formData.firstName} ${formData.lastName}\n
-            Compañía: ${formData.company}\n
-            Email: ${formData.email}\n
-            Mensaje: ${formData.message}\n
-        `,
-        }),
-    });
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key':  import.meta.env.VITE_BREVO_API,
+            },
+            body: JSON.stringify({
+                sender: { name: formData.firstName, email: formData.email },
+                to: [{ email: 'mollar.luciano@gmail.com', name: 'Luciano Mollar' }],
+                subject: `Mensaje de ${formData.firstName} ${formData.lastName}`,
+                textContent: `
+                Nombre: ${formData.firstName} ${formData.lastName}\n
+                Compañía: ${formData.company}\n
+                Email: ${formData.email}\n
+                Mensaje: ${formData.message}\n
+                `,
+            }),
+        });
 
-    if (response.ok) {
-            alert('Email enviado exitosamente');
+        if (response.ok) {
+            setEmailReturn({text:'Tu consulta fue enviada exitosamente', status:'success'});
         } else {
-            alert('Error al enviar el email');
+            setEmailReturn({text:'Error al enviar el formulario', status:'error'});
         }
+        setLoading(false);
     };
+
+    useEffect(() => {
+        if(!emailReturn.text)
+        return;
+        setTimeout(function(){
+            setEmailReturn({text:null, status:null});
+        }, 10000);
+    }, [emailReturn]);
 
   return (
     <>
@@ -167,11 +177,17 @@ export default function Contact() {
         <div className="mt-10">
           <button
             type="submit"
-            className="block w-full uppercase rounded-md bg-amber-400 px-3.5 py-2.5 text-center text-sm text-black shadow-sm hover:bg-amber-400/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+            disabled={loading ? 'disabled' : false}
+            className={`block w-full uppercase rounded-md bg-amber-400 px-3.5 py-2.5 text-center text-sm text-black shadow-sm hover:bg-amber-400/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 ${loading ? 'opacity-50' : ''}`}
           >
             Enviar
           </button>
         </div>
+        {emailReturn.text && (
+            <div className="mt-2">
+                <p className={`return-text-${emailReturn.status} text-sm font-semibold`}>{emailReturn.text}</p>
+            </div>
+        )}
       </form>
     </div>
     </>

@@ -109,14 +109,17 @@
   }
 }
 
-.color-slow{
+.color-slow,
+.return-text-error{
   color: rgb(220 38 38);
 }
-.color-avg{
+.color-avg,
+.return-text-warning{
   color: rgb(251 146 60);
 }
 .color-fast,
-.color-superfast
+.color-superfast,
+.return-text-success
 {
   color: rgb(101 163 13);
 }
