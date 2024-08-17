@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { LayoutContext } from '../contexts/layout';
-import audit from '../MOKS/audit.json';
+//import audit from '../MOKS/audit.json';
 import { IconIdea } from '../components/Icons';
 
 const stats = [
