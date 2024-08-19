@@ -18,7 +18,7 @@ export default function Nosotros() {
         <h3 className="mt-8 sm:mt-16 mb-4 sm:mb-8 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">Publicaciones</h3>
         <div className="lg:text-left flex gap-2 sm:gap-6 sm:items-center bg-white rounded-md drop-shadow-md sm:px-6 py-4">
           <div className='min-w-36 flex flex-col items-center sm:pr-6 sm:mr-6 border-r'>
-            <img src={lm} className='rounded-full border-4 border-white drop-shadow-lg object-cover h-20 w-20' />
+            <img src={lm} className='rounded-full border-4 border-white drop-shadow-lg object-cover h-20 w-20' loading='lazy' alt='Luciano Mollar' />
             <p className="mt-2 text-sm text-gray-600">Luciano Mollar</p>
             <div className="flex justify-start mt-2">
               <a className='mr-1 __smallIconModifier opacity-50 hover:opacity-100' href='https://www.linkedin.com/in/luciano-mollar/' target="_blank"><IconLinkedIn/></a>

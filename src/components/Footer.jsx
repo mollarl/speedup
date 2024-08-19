@@ -11,6 +11,7 @@ export default function Footer() {
                 alt="SpeedUp your web"
                 src={iso}
                 className="h-10 opacity-80 w-auto"
+                loading='lazy'
               />
             </a>
             <div className="sm:ml-6">
