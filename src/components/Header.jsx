@@ -268,7 +268,7 @@ export default function Header() {
                     name="url"
                     type="url"
                     placeholder="https://www.ejemplo.com"
-                    className="block w-full bg-white/80 rounded-md border-0 py-1.5 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full bg-white/80 rounded-md border-0 py-1.5 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-amber-400 sm:text-sm sm:leading-6"
                     disabled={loading ? 'disabled' : false}
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -302,7 +302,7 @@ export default function Header() {
                 <span className='text-2xl sm:text-3xl absolute top-2 right-4 cursor-pointer' onClick={() => {setModal(false);}}>&times;</span>
                 {metrics ? (
                 <>
-                <button className='hidden sm:block text-lg font-semibold uppercase rounded-md py-2 mt-4 border-0 bg-amber-400 hover:bg-amber-300 px-4 text-gray-800 z-10 shadow-lg absolute bottom-8 right-8'
+                <button className='block text-lg font-semibold uppercase rounded-md py-2 mt-4 border-0 bg-amber-400/70 backdrop-blur-sm hover:bg-amber-400 text-gray-800 z-30 shadow-lg w-[calc(100%-1rem)] sm:w-auto absolute bottom-2 left-2 right-2 sm:bottom-8 sm:right-8 sm:left-auto sm:px-4'
                 onClick={handleOptim}
                 >Optimizar esta web</button>
                 <div className='overflow-auto h-full'>
@@ -388,7 +388,7 @@ export default function Header() {
                                 <p className="text-base w-full sm:text-lg text-black">{loaderText}</p>
                             </div>
                         )}
-                        <p className="text-xs mb-2 sm:text-sm">Si querés podés cerrar esta ventana, cuando esté completa la auditoría te mostramos el resultado.</p>
+                        <p className="text-xs mb-2 sm:mt-20 sm:text-sm">Si querés podés seguir navegando la web, cuando esté completa la auditoría te mostramos el resultado.</p>
                     </div>
                 )}
             </div>
