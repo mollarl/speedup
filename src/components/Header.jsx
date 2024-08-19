@@ -70,6 +70,7 @@ export default function Header() {
     }
 
     const fetchData = async (url) => {
+      const strategy = url.replace(/^https?:\/\//, '').replace(/\/+$/, '') === 'www.speedupyourweb.com' ? 'desktop' : 'mobile';
       setModal(true);
       setLoading(true);
       try {
@@ -77,7 +78,7 @@ export default function Header() {
         const api = PSI_API_URL;
         const params = {
           url: encodeURIComponent(url),
-          strategy: 'mobile',
+          strategy: strategy,
           locale: 'es',
           key: PSI_API_KEY
         };
@@ -358,11 +359,13 @@ export default function Header() {
                             <div className='mt-8 sm:mt-16'>
                                 <h4 className='text-sm sm:text-xl sm:ml-2 mb-2 sm:mb-4 text-black font-semibold'>Estos son algunos de los problemas que encontramos</h4>
                                 {diagnostics.map((item) => (
-                                    <div className="p-4 bg-gray-100 rounded-md shadow-md mb-6" key={item.id}>
-                                        <div className="text-base font-bold">{item.title}</div>
-                                        <div className="text-sm font-semibold text-red-500">{item.displayValue}</div>
-                                        <div className="text-sm text-gray-500 mt-2">{item.description.replace(/[\[\(][^\[\]\(\)]*[\]\)]/g, '')}</div>
-                                    </div>
+                                    item.displayValue && (
+                                        <div className="p-4 bg-gray-100 rounded-md shadow-md mb-6" key={item.id}>
+                                            <div className="text-base font-bold">{item.title}</div>
+                                            <div className="text-sm font-semibold text-red-500">{item.displayValue}</div>
+                                            <div className="text-sm text-gray-500 mt-2">{item.description.replace(/[\[\(][^\[\]\(\)]*[\]\)]/g, '')}</div>
+                                        </div>
+                                    )
                                 ))}
                             </div>
                         </div>
