@@ -9,8 +9,10 @@ import ReactGA from "react-ga4";
 function App() {
 
   useEffect(()=>{
-    ReactGA.initialize(import.meta.env.VITE_GA_ID);
-    ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
+    setTimeout(function(){
+      ReactGA.initialize(import.meta.env.VITE_GA_ID);
+      ReactGA.send({ hitType: "pageview", page: "/", title: "Home" });
+    }, 2000);
   },[]);
 
   return (
