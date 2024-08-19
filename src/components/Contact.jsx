@@ -25,7 +25,7 @@ export default function Contact() {
                 'api-key':  import.meta.env.VITE_BREVO_API,
             },
             body: JSON.stringify({
-                sender: { name: formData.firstName, email: formData.email },
+                sender: { name: formData.firstName, email: 'mollar.luciano@gmail.com' },
                 to: [{ email: 'mollar.luciano@gmail.com', name: 'Luciano Mollar' }],
                 subject: `Mensaje de ${formData.firstName} ${formData.lastName}`,
                 textContent: `
