@@ -1,20 +1,16 @@
 import { useEffect, useContext, useState } from 'react'
 import { LayoutContext } from '../contexts/layout'
-import ReCAPTCHA from 'react-google-recaptcha';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+const SITE_KEY = import.meta.env.VITE_CAPTCHA;
 
 export default function Contact() {
-console.log(import.meta.env.VITE_CAPTCHA)
+
     const { defaultMessage, loading, setLoading } = useContext(LayoutContext);  
     const [emailReturn, setEmailReturn] = useState({text:null, status:null});
-    const [captchaToken, setCaptchaToken] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        if (!captchaToken) {
-            setEmailReturn({text:'Por favor completa el CAPTCHA.', status:'error'});
-            return;
-        }
         
         setLoading(true);
         
@@ -24,7 +20,6 @@ console.log(import.meta.env.VITE_CAPTCHA)
             company: event.target.company.value,
             email: event.target.email.value,
             message: event.target.message.value,
-            'g-recaptcha-response': captchaToken,
         };
 
         const response = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -52,12 +47,7 @@ console.log(import.meta.env.VITE_CAPTCHA)
             setEmailReturn({text:'Error al enviar el formulario', status:'error'});
         }
         setLoading(false);
-        setCaptchaToken(null);
     };
-    const handleCaptchaChange = (token) => {
-        setCaptchaToken(token);
-    };
-
     useEffect(() => {
         if(!emailReturn.text)
         return;
@@ -112,6 +102,9 @@ console.log(import.meta.env.VITE_CAPTCHA)
           Escribirnos por cualquier consulta que tengas. Estamos para ayudarte.
         </p>
       </div>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={SITE_KEY}
+      >
       <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
@@ -187,12 +180,6 @@ console.log(import.meta.env.VITE_CAPTCHA)
             </div>
           </div>
         </div>
-        <div className="mt-10 p-2 border flex justify-center bg-gray-100 rounded-md">
-            <ReCAPTCHA
-                sitekey={import.meta.env.VITE_CAPTCHA}
-                onChange={handleCaptchaChange}
-            />
-        </div>
         <div className="mt-10">
           <button
             type="submit"
@@ -209,6 +196,7 @@ console.log(import.meta.env.VITE_CAPTCHA)
             </div>
         )}
       </form>
+      </GoogleReCaptchaProvider>
     </div>
     </>
   )
