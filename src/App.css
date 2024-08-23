@@ -123,3 +123,5 @@
 {
   color: rgb(101 163 13);
 }
+
+.grecaptcha-badge{visibility: hidden!important;}

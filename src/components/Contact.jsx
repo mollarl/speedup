@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, useRef } from 'react'
 import { LayoutContext } from '../contexts/layout'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 const SITE_KEY = import.meta.env.VITE_CAPTCHA;
@@ -7,6 +7,9 @@ export default function Contact() {
 
     const { defaultMessage, loading, setLoading } = useContext(LayoutContext);  
     const [emailReturn, setEmailReturn] = useState({text:null, status:null});
+    const [isCaptchaVisible, setCaptchaVisible] = useState(false);
+    const visibilityStyle = `.grecaptcha-badge{visibility:visible!important;}`;
+    const formRef = useRef(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -56,8 +59,35 @@ export default function Contact() {
         }, 10000);
     }, [emailReturn]);
 
+    useEffect(() => {
+    
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setCaptchaVisible(true);
+            } else {
+              setCaptchaVisible(false);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      if (formRef.current) {
+        observer.observe(formRef.current);
+      }
+
+      return () => {
+        if (formRef.current) {
+          observer.unobserve(formRef.current);
+        }
+      };
+  }, []);
+
   return (
     <>
+    {isCaptchaVisible && (<style>{visibilityStyle}</style>)}
     <a id="contact"></a>
     <div className="relative isolate overflow-hidden bg-white px-4 py-24 sm:py-32">
       <div
@@ -102,10 +132,8 @@ export default function Contact() {
           Escribirnos por cualquier consulta que tengas. Estamos para ayudarte.
         </p>
       </div>
-      <GoogleReCaptchaProvider
-        reCaptchaKey={SITE_KEY}
-      >
-      <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <GoogleReCaptchaProvider reCaptchaKey={SITE_KEY}>
+      <form onSubmit={handleSubmit} ref={formRef} className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
