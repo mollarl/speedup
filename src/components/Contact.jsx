@@ -1,21 +1,30 @@
 import { useEffect, useContext, useState } from 'react'
 import { LayoutContext } from '../contexts/layout'
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Contact() {
-
+console.log(import.meta.env.VITE_CAPTCHA)
     const { defaultMessage, loading, setLoading } = useContext(LayoutContext);  
     const [emailReturn, setEmailReturn] = useState({text:null, status:null});
+    const [captchaToken, setCaptchaToken] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        
+        if (!captchaToken) {
+            setEmailReturn({text:'Por favor completa el CAPTCHA.', status:'error'});
+            return;
+        }
+        
         setLoading(true);
+        
         const formData = {
             firstName: event.target['first-name'].value,
             lastName: event.target['last-name'].value,
             company: event.target.company.value,
             email: event.target.email.value,
             message: event.target.message.value,
+            'g-recaptcha-response': captchaToken,
         };
 
         const response = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -43,6 +52,10 @@ export default function Contact() {
             setEmailReturn({text:'Error al enviar el formulario', status:'error'});
         }
         setLoading(false);
+        setCaptchaToken(null);
+    };
+    const handleCaptchaChange = (token) => {
+        setCaptchaToken(token);
     };
 
     useEffect(() => {
@@ -174,6 +187,12 @@ export default function Contact() {
             </div>
           </div>
         </div>
+        <div className="mt-10 p-2 border flex justify-center bg-gray-100 rounded-md">
+            <ReCAPTCHA
+                sitekey={import.meta.env.VITE_CAPTCHA}
+                onChange={handleCaptchaChange}
+            />
+        </div>
         <div className="mt-10">
           <button
             type="submit"
@@ -183,6 +202,7 @@ export default function Contact() {
             Enviar
           </button>
         </div>
+
         {emailReturn.text && (
             <div className="mt-2">
                 <p className={`return-text-${emailReturn.status} text-sm font-semibold`}>{emailReturn.text}</p>
