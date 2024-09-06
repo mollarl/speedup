@@ -1,21 +1,42 @@
+import { useContext } from 'react';
+import { LayoutContext } from '../contexts/layout'
 import lm from '../assets/img/lm.png';
 import { IconMail, IconLinkedIn } from '../components/Icons';
+
+const translations = {
+  es: {
+      title: 'Sobre nosotros',
+      text: 'Somos un grupo de desarrolladores apacionados por la programación, la web performance y la experiencia del usuario.',
+      text2: 'Desde la patagonia argentina trabajamos para <strong className="text-black font-semibold">mejorar la experiencia de las personas cuando navegan</strong>, aportamos para hacer <strong className="text-black font-semibold">una web más rápida, estable y accesible</strong> y a la vez <strong className="text-black font-semibold">ayudamamos a empresas de todo tipo y de todo el mundo a brindar productos digitales de máxima calidad</strong> y alcanzar y superar sus objetivos comerciales.',
+      subtitle: 'Publicaciones',
+  },
+  en: {
+      title: 'About Us',
+      text: 'We are a group of developers passionate about programming, web performance, and user experience.',
+      text2: 'From Patagonia, Argentina, we work to enhance people’s browsing experience, contributing to make the web <strong>faster, more stable, and accessible,</strong> while <strong>helping businesses of all kinds and from all over the world deliver top-quality digital products</strong> and achieve and exceed their commercial goals.',
+      subtitle: 'Posts',
+  },
+};
+
 export default function Nosotros() {
+
+  const { language } = useContext(LayoutContext);
+  const currentTranslations = translations[language];
+
   return (
   <>
     <a id="nosotros"></a>
     <div className="py-8 sm:py-16 bg-gray-100">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl lg:text-center">
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Sobre nosotros</h2>
+          <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{currentTranslations.title}</h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Somos un grupo de desarrolladores apacionados por la programación, la web performance y la experiencia del usuario.
+            {currentTranslations.text}
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Desde la patagonia argentina trabajamos para <strong className="text-black font-semibold">mejorar la experiencia de las personas cuando navegan</strong>, aportamos para hacer <strong className="text-black font-semibold">una web más rápida, estable y accesible</strong> y a la vez <strong className="text-black font-semibold">ayudamamos a empresas de todo tipo y de todo el mundo a brindar productos digitales de máxima calidad</strong> y alcanzar y superar sus objetivos comerciales.
+          <p className="mt-6 text-lg leading-8 text-gray-600" dangerouslySetInnerHTML={{__html: currentTranslations.text2}}>
           </p>
         </div>
-        <h3 className="mt-8 sm:mt-16 mb-4 sm:mb-8 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">Publicaciones</h3>
+        <h3 className="mt-8 sm:mt-16 mb-4 sm:mb-8 text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">{currentTranslations.subtitle}</h3>
         <div className="lg:text-left flex gap-2 sm:gap-6 sm:items-center bg-white rounded-md drop-shadow-md sm:px-6 py-4">
           <div className='min-w-36 flex flex-col items-center sm:pr-6 sm:mr-6 border-r'>
             <img src={lm} className='rounded-full border-4 border-white drop-shadow-lg object-cover h-20 w-20' loading='lazy' alt='Luciano Mollar' />

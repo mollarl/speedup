@@ -1,22 +1,43 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { IconMenu } from '../components/Icons';
+import { LayoutContext } from '../contexts/layout'
 import logo from '../assets/img/speedupSM.png';
 
-const initialNavigation = [
-  { name: 'Por qué optimizar', href: '/#porqueoptimizar', current: false, important:false },
-  { name: 'Servicios', href: '/#servicios', current: false, important:false },
-  { name: 'Otras soluciones', href: '/#soluciones', current: false, important:false },
-  { name: 'Nosotros', href: '/#nosotros', current: false, important:false },
-  //{ name: 'Proyectos', href: '#', current: false, important:false },
-  { name: 'Contactanos', href: '/#contact', current: false, important:true },
-];
+const translations = {
+  es: {
+      wy: 'Por qué optimizar',
+      sv: 'Servicios',
+      os: 'Otras soluciones',
+      us: 'Nosotros',
+      py: 'Proyectos',
+      cu: 'Contactanos',
+  },
+  en: {
+      wy: 'Why Optimize?',
+      sv: 'Services',
+      os: 'Other Solutions',
+      us: 'About Us',
+      py: 'Projects',
+      cu: 'Contact Us',
+  },
+};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Nav() {
+  const { language } = useContext(LayoutContext);
+  const currentTranslations = translations[language];
   const [menuOpen, setMenuOpen] = useState(false);
+  const initialNavigation = [
+    { name: currentTranslations.wy, href: '/#porqueoptimizar', current: false, important:false },
+    { name: currentTranslations.sv, href: '/#servicios', current: false, important:false },
+    { name: currentTranslations.os, href: '/#soluciones', current: false, important:false },
+    { name: currentTranslations.us, href: '/#nosotros', current: false, important:false },
+    //{ name: currentTranslations.py, href: '#', current: false, important:false },
+    { name: currentTranslations.cu, href: '/#contact', current: false, important:true },
+  ];
   const [navigation, setNavigation] = useState(initialNavigation);
 
   const toggleMenu = (event) => {
@@ -93,6 +114,7 @@ export default function Nav() {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={() => setMenuOpen(false)}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     item.important ? 'text-amber-400 hover:text-amber-300':'',
