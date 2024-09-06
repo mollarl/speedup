@@ -3,13 +3,45 @@ import { LayoutContext } from '../contexts/layout'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 const SITE_KEY = import.meta.env.VITE_CAPTCHA;
 
+const translations = {
+  es: {
+    main: {
+      title: 'Contactanos',
+      text: 'Escribirnos por cualquier consulta que tengas. Estamos para ayudarte.',
+      name: 'Nombre',
+      surname: 'Apellido',
+      comp: 'Compañía',
+      email: 'Email',
+      msg: 'Mensaje',
+      btn: 'Enviar',
+      return: 'Tu consulta fue enviada exitosamente',
+      error: 'Error al enviar el formulario',
+    },
+  },
+  en: {
+    main: {
+      title: 'Contact Us',
+      text: `Feel free to reach out if you have any questions. We're happy to help.`,
+      name: 'First Name',
+      surname: 'Last Name',
+      comp: 'Company',
+      email: 'Email',
+      msg: 'Message',
+      btn: 'Send',
+      return: 'Your inquiry was successfully sent',
+      error: 'Error sending the formError al enviar el formulario',
+    },
+  }
+};
+
 export default function Contact() {
 
-    const { defaultMessage, loading, setLoading } = useContext(LayoutContext);  
+    const { defaultMessage, loading, setLoading, language } = useContext(LayoutContext);  
     const [emailReturn, setEmailReturn] = useState({text:null, status:null});
     const [isCaptchaVisible, setCaptchaVisible] = useState(false);
     const visibilityStyle = `.grecaptcha-badge{visibility:visible!important;}`;
     const formRef = useRef(null);
+    const currentTranslations = translations[language];
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -45,9 +77,9 @@ export default function Contact() {
         });
 
         if (response.ok) {
-            setEmailReturn({text:'Tu consulta fue enviada exitosamente', status:'success'});
+            setEmailReturn({text:currentTranslations.main.return, status:'success'});
         } else {
-            setEmailReturn({text:'Error al enviar el formulario', status:'error'});
+            setEmailReturn({text:currentTranslations.main.error, status:'error'});
         }
         setLoading(false);
     };
@@ -127,9 +159,9 @@ export default function Contact() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contactanos</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{currentTranslations.main.title}</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          Escribirnos por cualquier consulta que tengas. Estamos para ayudarte.
+          {currentTranslations.main.text}
         </p>
       </div>
       <GoogleReCaptchaProvider reCaptchaKey={SITE_KEY}>
@@ -137,7 +169,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              Nombre
+              {currentTranslations.main.name}
             </label>
             <div className="mt-2.5">
               <input
@@ -152,7 +184,7 @@ export default function Contact() {
           </div>
           <div>
             <label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              Apellido
+              {currentTranslations.main.surname}
             </label>
             <div className="mt-2.5">
               <input
@@ -166,7 +198,7 @@ export default function Contact() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="company" className="block text-sm font-semibold leading-6 text-gray-900">
-              Compañía
+              {currentTranslations.main.comp}
             </label>
             <div className="mt-2.5">
               <input
@@ -180,7 +212,7 @@ export default function Contact() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
-              Email
+              {currentTranslations.main.email}
             </label>
             <div className="mt-2.5">
               <input
@@ -195,7 +227,7 @@ export default function Contact() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="message" className="block text-sm font-semibold leading-6 text-gray-900">
-              Mensaje
+              {currentTranslations.main.msg}
             </label>
             <div className="mt-2.5">
               <textarea
@@ -214,7 +246,7 @@ export default function Contact() {
             disabled={loading ? 'disabled' : false}
             className={`block w-full uppercase rounded-md bg-amber-400 px-3.5 py-2.5 text-center text-sm text-black shadow-sm hover:bg-amber-400/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 ${loading ? 'opacity-50' : ''}`}
           >
-            Enviar
+            {currentTranslations.main.btn}
           </button>
         </div>
 
