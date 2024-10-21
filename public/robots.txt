@@ -1,3 +1,12 @@
 User-agent: *
-Allow: /
+Allow: /wp-content/
+Allow: /assets/
+Allow: /js/
+Allow: /css/
+Allow: /images/
+Allow: /fonts/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /admin/
+
 Sitemap: https://speedupyourweb.com/sitemap.xml
