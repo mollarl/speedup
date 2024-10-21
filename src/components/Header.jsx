@@ -325,15 +325,15 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto lg:mx-0 lg:flex lg:items-center lg:space-x-8">
           <div className="lg:flex-1 lg:w-3/6">
-            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
               {currentTranslations.main.title}<span className="text-amber-400">{currentTranslations.main.title2}</span>
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            </h1>
+            <h2 className="mt-6 text-lg leading-8 text-gray-300">
               {currentTranslations.main.text}
               <span className="text-white">
                 {currentTranslations.main.text2}
               </span>
-            </p>
+            </h2>
           </div>
 
           <div className="mt-8 lg:mt-0 flex-none lg:w-3/6 sm:px-16">
